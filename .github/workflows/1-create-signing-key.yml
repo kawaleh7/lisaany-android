@@ -1,0 +1,22 @@
+name: 1) Create signing key (run ONCE)
+on:
+  workflow_dispatch:
+jobs:
+  keystore:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Generate keystore
+        run: |
+          PASS=$(openssl rand -hex 12)
+          keytool -genkeypair -v -keystore lisaany-upload.keystore -alias lisaany -keyalg RSA -keysize 2048 -validity 10000 -storepass "$PASS" -keypass "$PASS" -dname "CN=Lisaany, O=Lisaany, C=CA"
+          echo "KEYSTORE_BASE64 (copy everything between the lines into the GitHub secret KEYSTORE_BASE64):" > secrets.txt
+          echo "-----" >> secrets.txt
+          base64 -w0 lisaany-upload.keystore >> secrets.txt
+          echo "" >> secrets.txt; echo "-----" >> secrets.txt
+          echo "KEYSTORE_PASSWORD (GitHub secret): $PASS" >> secrets.txt
+          echo "KEY_ALIAS (GitHub secret): lisaany" >> secrets.txt
+      - name: Upload

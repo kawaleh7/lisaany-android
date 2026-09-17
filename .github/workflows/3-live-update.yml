@@ -1,0 +1,30 @@
+name: 3) Live update installed apps (Capgo)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'index.html'
+      - 'manifest.json'
+jobs:
+  live-update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Arrange folders
+        run: |
+          mkdir -p www/icons
+          cp index.html manifest.json www/
+          if [ -f lisaany-fonts.zip ]; then unzip -o -q lisaany-fonts.zip -d www/; fi
+          if ls *.woff2 >/dev/null 2>&1; then cp *.woff2 www/; fi
+          cp icon-192.png icon-512.png maskable-512.png www/icons/
+      - name: Upload new web bundle to Capgo
+        env:
+          CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
+        run: |
+          if [ -z "$CAPGO_TOKEN" ]; then echo "::error::Add the GitHub secret CAPGO_TOKEN"; exit 1; fi
+          npx --yes @capgo/cli@latest bundle upload --apikey "$CAPGO_TOKEN" --path www --channel production --bundle "1.0.${{ github.run_number }}" --app-id com.lisaany.arabic

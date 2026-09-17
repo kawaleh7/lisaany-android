@@ -24,4 +24,9 @@ jobs:
           if [ -f lisaany-fonts.zip ]; then unzip -o -q lisaany-fonts.zip -d www/; fi
           if ls *.woff2 >/dev/null 2>&1; then cp *.woff2 www/; fi
           cp icon-192.png icon-512.png maskable-512.png www/icons/
-          printf 'try{if(window.Capacitor&&window.Capacitor.P
+      - name: Upload new web bundle to Capgo
+        env:
+          CAPGO_TOKEN: ${{ secrets.CAPGO_TOKEN }}
+        run: |
+          if [ -z "$CAPGO_TOKEN" ]; then echo "::error::Add the GitHub secret CAPGO_TOKEN"; exit 1; fi
+          npx --yes @capgo/cli@latest bundle upload com.lisaany.arabic --apikey "$CAPGO_TOKEN" --path www --channel production --bundle "1.0.${{ github.run_number }}" --no-code-check --ignore-notify-app-ready --ignore-metadata-check

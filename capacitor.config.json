@@ -1,0 +1,29 @@
+{
+  "appId": "com.lisaany.arabic",
+  "appName": "Lisaany",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0a1730"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#0a1730",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0a1730"
+    },
+    "CapacitorUpdater": {
+      "autoUpdate": true,
+      "directUpdate": false,
+      "resetWhenUpdate": true
+    }
+  }
+}

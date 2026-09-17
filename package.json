@@ -2,21 +2,17 @@
   "name": "lisaany-arabic",
   "version": "1.0.0",
   "private": true,
-  "description": "Lisaany \u2014 Learn Arabic (Capacitor app)",
-  "scripts": {
-    "sync": "cap sync",
-    "assets": "capacitor-assets generate --android"
-  },
+  "description": "Lisaany — Learn Arabic (Capacitor app)",
   "dependencies": {
-    "@capacitor/android": "^6.2.0",
-    "@capacitor/app": "^6.0.2",
-    "@capacitor/core": "^6.2.0",
-    "@capacitor/splash-screen": "^6.0.3",
-    "@capacitor/status-bar": "^6.0.2",
-    "@capgo/capacitor-updater": "^6.14.0"
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
+    "@capgo/capacitor-updater": "^7.0.0"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
-    "@capacitor/cli": "^6.2.0"
+    "@capacitor/cli": "^7.0.0"
   }
 }

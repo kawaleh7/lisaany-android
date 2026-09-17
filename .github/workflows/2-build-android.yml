@@ -11,6 +11,7 @@ on:
       - 'package.json'
       - '*.png'
       - '*.woff2'
+      - 'lisaany-fonts.zip'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,9 +28,11 @@ jobs:
         run: |
           mkdir -p www/icons resources
           cp index.html manifest.json www/
-          cp *.woff2 www/
+          if [ -f lisaany-fonts.zip ]; then unzip -o -q lisaany-fonts.zip -d www/; fi
+          if ls *.woff2 >/dev/null 2>&1; then cp *.woff2 www/; fi
           cp icon-192.png icon-512.png maskable-512.png www/icons/
           cp icon-only.png icon-foreground.png icon-background.png splash.png splash-dark.png resources/
+          ls www
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
       - name: Install Capacitor

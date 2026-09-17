@@ -33,8 +33,10 @@ jobs:
           cp icon-192.png icon-512.png maskable-512.png www/icons/
           cp icon-only.png icon-foreground.png icon-background.png splash.png splash-dark.png resources/
           ls www
-      - name: Accept Android SDK licenses
-        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+      - name: Android SDK 36
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null 2>&1 || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" > /dev/null
       - name: Install Capacitor
         run: npm install --no-audit --no-fund
       - name: Create Android project
@@ -42,9 +44,14 @@ jobs:
           npx cap add android
           npx capacitor-assets generate --android
           npx cap sync android
-      - name: Set version + app name
+      - name: Set version + app name + target API 36
         run: |
           sed -i "s/minSdkVersion = 2[0-9]/minSdkVersion = 23/" android/variables.gradle
+          sed -i "s/compileSdkVersion = 3[0-9]/compileSdkVersion = 36/" android/variables.gradle
+          sed -i "s/targetSdkVersion = 3[0-9]/targetSdkVersion = 36/" android/variables.gradle
+          sed -i -E "s/com.android.tools.build:gradle:[0-9.]+/com.android.tools.build:gradle:8.11.1/" android/build.gradle
+          sed -i -E "s#gradle-[0-9.]+-(all|bin).zip#gradle-8.14.3-all.zip#" android/gradle/wrapper/gradle-wrapper.properties
+          echo "android.suppressUnsupportedCompileSdk=36" >> android/gradle.properties
           VER_CODE=${{ github.run_number }}
           VER_NAME="1.0.${{ github.run_number }}"
           sed -i "s/versionCode [0-9]*/versionCode $VER_CODE/" android/app/build.gradle

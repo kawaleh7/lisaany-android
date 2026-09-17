@@ -10,6 +10,7 @@ on:
       - 'capacitor.config.json'
       - 'package.json'
       - '*.png'
+      - '*.woff2'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +27,7 @@ jobs:
         run: |
           mkdir -p www/icons resources
           cp index.html manifest.json www/
+          cp *.woff2 www/
           cp icon-192.png icon-512.png maskable-512.png www/icons/
           cp icon-only.png icon-foreground.png icon-background.png splash.png splash-dark.png resources/
       - name: Accept Android SDK licenses
